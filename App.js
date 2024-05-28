@@ -1,60 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useState } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import DetailScreen from './src/Components/DetailScreen';
+import HomeScreen from './src/Components/HomeScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+//Stack Navigator
+const Tab = createBottomTabNavigator();
+
 export default function App() {
-
-  const [todoText, setTodoText] = useState('');
-  const [todoList, setTodoList] = useState([]);
-
-
-  function textInputChanged(textChanged) {
-    setTodoText(textChanged);
-  }
-  function addTodo() {
-    setTodoList((currentTodoList) => [...currentTodoList, todoText]);
-  }
-
-
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput onChangeText={textInputChanged} style={styles.textInput} placeholder='Your todo' />
-        <Button onPress={addTodo} title='Add todo' />
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-      </View>
-      <View style={styles.todoList}>
-        {todoList.map((todo) => <Text key={todo}>{todo}</Text>)}
-      </View>
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Detail') {
+              iconName = 'info-circle';
+            }
+
+            // You can return any component that you like here!
+            return <Icon name={iconName} size={25} color={color} />;
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Detail" component={DetailScreen} />
+      </Tab.Navigator>
       <StatusBar style="auto" />
-    </View>
-
-  );
+    </NavigationContainer>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    paddingTop: 100,
-    flex: 1,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    marginBottom: 50,
-    borderBottomWidth: 1,
-    borderBlockColor: 'gray',
-    paddingBottom: 50,
-    flex: 1,
-    alignItems: 'center',
-
-  },
-  textInput: {
-    borderWidth: 2,
-    borderColor: 'blue',
-    padding: 8,
-    marginRight: 8,
-    width: '70%'
-  },
-  todoList: {
-    flex: 6,
-  }
-});
