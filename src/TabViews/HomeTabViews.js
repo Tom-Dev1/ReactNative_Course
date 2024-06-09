@@ -2,10 +2,14 @@ import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { View, Text } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import HomeStack from '../Stacks/HomeStack';
 
 
 const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
+    <View style={{ flex: 1, backgroundColor: '#ff4081' }}>
+        <HomeStack />
+    </View>
+
 );
 
 const SecondRoute = () => (
@@ -14,7 +18,6 @@ const SecondRoute = () => (
 //Tabs view
 const HomeTabViews = () => {
     const layout = useWindowDimensions();
-
     const [index, setIndex] = React.useState(0); // biến hiển thị các tab
     const [routes] = React.useState([
         { key: 'music', title: 'Music' },
